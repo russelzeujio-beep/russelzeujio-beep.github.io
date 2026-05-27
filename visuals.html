@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ZEUJIO — Visuels : Cartes, Terminaux & Bannière</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --g1:#00c27a; --g2:#00e896; --g3:#00a86b;
+  --gold:#c9a84c; --gold2:#e8c96a;
+  --blue:#1a6fa8; --blue2:#2196f3;
+  --dark:#071a10; --white:#fff; --off:#f2fbf6;
+  --font:'Plus Jakarta Sans',sans-serif;
+  --bebas:'Bebas Neue',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--font);background:#0a0f0a;color:var(--white);overflow-x:hidden;}
+
+/* ═══ SECTION TITLES ═══ */
+.page-title{text-align:center;padding:4rem 2rem 1rem;font-family:var(--bebas);font-size:3.5rem;letter-spacing:.08em;background:linear-gradient(135deg,var(--g2),var(--gold2),var(--blue2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.page-sub{text-align:center;color:rgba(255,255,255,.4);font-size:13px;margin-bottom:4rem;letter-spacing:.05em;}
+.section-lbl{font-family:var(--bebas);font-size:2rem;letter-spacing:.1em;color:var(--g2);margin-bottom:.4rem;}
+.section-desc{font-size:12px;color:rgba(255,255,255,.4);margin-bottom:3rem;letter-spacing:.05em;}
+.block{padding:4rem 3rem;border-top:1px solid rgba(0,194,122,.1);}
+
+/* ═══════════════════════
+   CARTES DE SANTÉ
+═══════════════════════ */
+.cards-grid{display:flex;gap:3rem;flex-wrap:wrap;justify-content:center;}
+
+/* CARTE RECTO */
+.health-card{
+  width:380px;height:240px;border-radius:18px;position:relative;
+  overflow:hidden;cursor:pointer;
+  transition:transform .4s cubic-bezier(.16,1,.3,1),box-shadow .4s;
+  flex-shrink:0;
+}
+.health-card:hover{transform:scale(1.04) rotateY(-3deg);box-shadow:0 30px 80px rgba(0,0,0,.6);}
+
+/* Carte Standard — Vert/Or */
+.card-std{background:linear-gradient(135deg,#062a18 0%,#0a3d25 40%,#083022 70%,#061e2e 100%);}
+.card-std::before{content:'';position:absolute;top:-80px;right:-80px;width:280px;height:280px;background:radial-gradient(circle,rgba(0,194,122,.25) 0%,transparent 65%);pointer-events:none;}
+.card-std::after{content:'';position:absolute;bottom:-60px;left:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(26,111,168,.2) 0%,transparent 65%);pointer-events:none;}
+
+/* Carte Premium — Gold */
+.card-premium{background:linear-gradient(135deg,#1a0f00 0%,#2e1c00 40%,#1a1200 70%,#0d0a1a 100%);}
+.card-premium::before{content:'';position:absolute;top:-60px;right:-60px;width:250px;height:250px;background:radial-gradient(circle,rgba(232,201,106,.2) 0%,transparent 65%);pointer-events:none;}
+
+/* Carte Urgence — Rouge/Sombre */
+.card-urgence{background:linear-gradient(135deg,#1a0508 0%,#2e0a10 40%,#1a050d 70%,#0d0a1a 100%);}
+.card-urgence::before{content:'';position:absolute;top:-60px;right:-60px;width:250px;height:250px;background:radial-gradient(circle,rgba(220,50,80,.2) 0%,transparent 65%);pointer-events:none;}
+
+.card-inner{position:relative;z-index:1;padding:1.6rem 1.8rem;height:100%;display:flex;flex-direction:column;justify-content:space-between;}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;}
+.card-chip-wrap{display:flex;flex-direction:column;gap:.4rem;}
+.chip{width:38px;height:28px;border-radius:5px;background:linear-gradient(135deg,var(--gold2),#b8920a);box-shadow:0 2px 8px rgba(0,0,0,.4);position:relative;overflow:hidden;}
+.chip::before{content:'';position:absolute;top:8px;left:0;right:0;height:1px;background:rgba(255,255,255,.3);}
+.chip::after{content:'';position:absolute;left:10px;top:0;bottom:0;width:1px;background:rgba(255,255,255,.2);}
+.chip-nfc{font-size:9px;color:rgba(255,255,255,.4);letter-spacing:.1em;margin-top:.2rem;}
+
+/* Logo ZEUJIO sur carte */
+.card-logo-txt{font-family:var(--bebas);letter-spacing:.12em;font-size:1rem;}
+.card-logo-txt .z{color:var(--gold2);}
+.card-logo-txt .rest{color:rgba(255,255,255,.9);}
+.card-logo-sub{font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:1px;text-align:right;}
+
+.card-mid{display:flex;gap:.5rem;align-items:center;}
+.puce-badge{font-size:7px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .5rem;border-radius:3px;}
+.puce-med{background:rgba(0,194,122,.15);color:var(--g2);border:1px solid rgba(0,194,122,.3);}
+.puce-ph{background:rgba(232,201,106,.15);color:var(--gold2);border:1px solid rgba(232,201,106,.3);}
+.puce-urg{background:rgba(220,50,80,.15);color:#ff6680;border:1px solid rgba(220,50,80,.3);}
+
+.card-name-block{margin-top:auto;}
+.card-label-sm{font-size:7px;letter-spacing:.2em;text-transform:uppercase;opacity:.4;margin-bottom:2px;}
+.card-patient-name{font-family:var(--bebas);font-size:1.3rem;letter-spacing:.08em;color:var(--white);line-height:1;}
+.card-id{font-size:9px;letter-spacing:.15em;color:rgba(255,255,255,.3);margin-top:.3rem;font-family:monospace;}
+
+.card-bottom{display:flex;justify-content:space-between;align-items:flex-end;}
+.card-meta{display:flex;flex-direction:column;gap:.15rem;}
+.card-meta-item{font-size:8px;letter-spacing:.1em;color:rgba(255,255,255,.35);}
+.card-meta-item strong{color:rgba(255,255,255,.7);}
+
+/* QR code SVG-like */
+.qr-mini{width:44px;height:44px;display:grid;grid-template-columns:repeat(7,1fr);grid-template-rows:repeat(7,1fr);gap:1px;}
+.qr-mini span{border-radius:1px;}
+.qr-dark span:nth-child(1),.qr-dark span:nth-child(2),.qr-dark span:nth-child(3),.qr-dark span:nth-child(7),.qr-dark span:nth-child(8),.qr-dark span:nth-child(14),.qr-dark span:nth-child(15),.qr-dark span:nth-child(21),.qr-dark span:nth-child(43),.qr-dark span:nth-child(44),.qr-dark span:nth-child(45),.qr-dark span:nth-child(49),.qr-dark span:nth-child(5),.qr-dark span:nth-child(6){background:rgba(0,194,122,.8);}
+.qr-dark span{background:rgba(0,194,122,.15);}
+
+/* Hologramme décoratif */
+.holo{position:absolute;bottom:1rem;right:5rem;width:30px;height:30px;border-radius:50%;background:conic-gradient(var(--g2),var(--gold2),var(--blue2),var(--g2));opacity:.25;filter:blur(2px);}
+
+/* Bande magnétique (verso illusion) */
+.card-stripe{position:absolute;top:40px;left:0;right:0;height:40px;background:rgba(0,0,0,.5);pointer-events:none;}
+
+/* ═══════════════════════
+   TERMINAUX
+═══════════════════════ */
+.terminals-grid{display:flex;gap:3rem;flex-wrap:wrap;justify-content:center;align-items:flex-end;}
+
+/* Terminal de comptoir */
+.terminal-counter{
+  width:280px;
+  display:flex;flex-direction:column;align-items:center;gap:0;
+  filter:drop-shadow(0 20px 40px rgba(0,194,122,.2));
+}
+.t-screen-wrap{
+  width:260px;height:180px;
+  background:linear-gradient(160deg,#1a2a1f,#0d1f14);
+  border-radius:12px 12px 0 0;
+  border:2px solid rgba(0,194,122,.2);
+  border-bottom:none;
+  padding:12px;
+  position:relative;overflow:hidden;
+}
+.t-screen-inner{
+  background:#020f07;border-radius:6px;height:100%;
+  display:flex;flex-direction:column;
+  border:1px solid rgba(0,194,122,.15);
+  overflow:hidden;
+}
+.t-status-bar{background:rgba(0,194,122,.1);padding:4px 8px;display:flex;justify-content:space-between;align-items:center;}
+.t-status-dot{width:6px;height:6px;background:var(--g2);border-radius:50%;animation:pulse 2s infinite;}
+.t-status-txt{font-size:7px;letter-spacing:.1em;color:var(--g2);text-transform:uppercase;}
+.t-screen-body{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:8px;padding:8px;}
+.t-logo-screen{font-family:var(--bebas);font-size:1.4rem;letter-spacing:.15em;background:linear-gradient(135deg,var(--g2),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.t-screen-msg{font-size:8px;color:rgba(255,255,255,.5);text-align:center;letter-spacing:.05em;}
+.t-card-slot-visual{width:60px;height:6px;background:rgba(0,194,122,.15);border-radius:3px;border:1px solid rgba(0,194,122,.2);}
+.t-scan-line{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--g2),transparent);animation:scanLine 2s linear infinite;opacity:.4;}
+@keyframes scanLine{0%{top:10%}100%{top:90%}}
+
+.t-body-counter{
+  width:280px;height:60px;
+  background:linear-gradient(180deg,#1a2a1f,#0f1f15);
+  border-radius:0 0 8px 8px;
+  border:2px solid rgba(0,194,122,.2);
+  border-top:none;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+  position:relative;
+}
+.t-brand-strip{width:80%;height:2px;background:linear-gradient(90deg,transparent,var(--g1),var(--gold2),var(--g1),transparent);margin-bottom:4px;}
+.t-brand-txt{font-size:8px;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.3);}
+.t-slots{display:flex;gap:12px;justify-content:center;}
+.t-slot{width:40px;height:4px;background:rgba(0,0,0,.6);border-radius:2px;border:1px solid rgba(0,194,122,.15);}
+.t-base{width:200px;height:12px;background:linear-gradient(180deg,#0d1f14,#081208);border-radius:0 0 8px 8px;margin-top:-1px;}
+
+/* Terminal mural */
+.terminal-wall{
+  width:200px;
+  display:flex;flex-direction:column;align-items:center;
+}
+.tw-mount{width:220px;height:340px;background:linear-gradient(160deg,#1e2d22,#111d14);border-radius:16px;border:2px solid rgba(0,194,122,.15);display:flex;flex-direction:column;align-items:center;padding:16px;gap:10px;filter:drop-shadow(0 20px 50px rgba(0,0,0,.5));position:relative;overflow:hidden;}
+.tw-mount::before{content:'';position:absolute;top:-40px;right:-40px;width:120px;height:120px;background:radial-gradient(circle,rgba(0,194,122,.1),transparent);pointer-events:none;}
+.tw-screen{width:100%;height:140px;background:#020f07;border-radius:8px;border:1px solid rgba(0,194,122,.2);display:flex;flex-direction:column;overflow:hidden;}
+.tw-screen-top{background:linear-gradient(135deg,var(--g3),var(--blue));padding:6px 10px;display:flex;justify-content:space-between;}
+.tw-screen-top-lbl{font-size:7px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:white;}
+.tw-screen-top-dot{width:5px;height:5px;background:rgba(255,255,255,.7);border-radius:50%;animation:pulse 2s infinite;}
+.tw-body{flex:1;padding:8px;display:flex;flex-direction:column;gap:4px;}
+.tw-row{display:flex;justify-content:space-between;align-items:center;padding:3px 4px;background:rgba(0,194,122,.05);border-radius:3px;}
+.tw-row-k{font-size:7px;color:rgba(255,255,255,.4);}
+.tw-row-v{font-size:7px;color:var(--g2);font-weight:700;}
+.tw-reader{width:80%;height:36px;background:#0a150d;border-radius:6px;border:1px solid rgba(0,194,122,.2);display:flex;align-items:center;justify-content:center;gap:6px;}
+.tw-reader-led{width:6px;height:6px;background:var(--g2);border-radius:50%;animation:pulse 1.5s infinite;}
+.tw-reader-txt{font-size:7px;color:rgba(255,255,255,.4);letter-spacing:.08em;text-transform:uppercase;}
+.tw-qr-scan{width:60px;height:60px;border:1px solid rgba(0,194,122,.2);border-radius:6px;display:grid;grid-template-columns:repeat(4,1fr);gap:2px;padding:4px;}
+.tw-qr-scan span{background:rgba(0,194,122,.3);border-radius:1px;}
+.tw-qr-scan span:nth-child(even){background:rgba(0,194,122,.08);}
+.tw-brand{font-family:var(--bebas);font-size:.8rem;letter-spacing:.15em;color:rgba(255,255,255,.3);}
+
+/* Terminal portable */
+.terminal-handheld{
+  width:140px;
+  display:flex;flex-direction:column;align-items:center;
+}
+.th-device{width:150px;height:260px;background:linear-gradient(160deg,#1e2d22,#0f1a12);border-radius:20px;border:2px solid rgba(0,194,122,.15);display:flex;flex-direction:column;align-items:center;padding:14px;gap:8px;filter:drop-shadow(0 20px 50px rgba(0,0,0,.4));position:relative;}
+.th-speaker{width:40px;height:3px;background:rgba(0,0,0,.5);border-radius:2px;margin-bottom:4px;}
+.th-screen{width:100%;flex:1;background:#020f07;border-radius:10px;border:1px solid rgba(0,194,122,.2);display:flex;flex-direction:column;overflow:hidden;}
+.th-screen-hdr{background:linear-gradient(135deg,#0a2e1a,#061a24);padding:6px 8px;display:flex;justify-content:space-between;align-items:center;}
+.th-screen-lbl{font-family:var(--bebas);font-size:.8rem;letter-spacing:.1em;color:var(--g2);}
+.th-screen-body{flex:1;padding:6px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px;}
+.th-screen-icon{font-size:1.4rem;}
+.th-screen-msg{font-size:7px;color:rgba(255,255,255,.4);text-align:center;}
+.th-bottom{display:flex;flex-direction:column;align-items:center;gap:6px;width:100%;}
+.th-slot{width:70%;height:5px;background:#010a04;border-radius:3px;border:1px solid rgba(0,194,122,.15);}
+.th-btn{width:40px;height:40px;background:linear-gradient(135deg,var(--g1),var(--g3));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;box-shadow:0 4px 15px rgba(0,194,122,.4);}
+.t-label{font-size:11px;color:rgba(255,255,255,.4);margin-top:1rem;text-align:center;letter-spacing:.05em;}
+
+/* ═══════════════════════
+   BANNIÈRE / DRAPEAU
+═══════════════════════ */
+.banner-wrap{display:flex;justify-content:center;padding:1rem;}
+.flag-banner{
+  width:100%;max-width:900px;
+  height:320px;
+  border-radius:16px;
+  position:relative;overflow:hidden;
+  box-shadow:0 30px 80px rgba(0,0,0,.5);
+}
+/* Drapeau Cameroun: vert | rouge | jaune */
+.flag-bg{position:absolute;inset:0;display:flex;}
+.flag-green{flex:1;background:#007a5e;}
+.flag-red{flex:1;background:#ce1126;}
+.flag-yellow{flex:1;background:#fcd116;}
+
+/* Overlay sombre pour lisibilité */
+.flag-overlay{position:absolute;inset:0;background:rgba(0,0,0,.55);}
+.flag-overlay2{position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,50,30,.7),rgba(0,30,50,.5));}
+
+/* Contenu bannière */
+.flag-content{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;z-index:2;}
+.flag-star{font-size:2.5rem;text-shadow:0 0 20px rgba(252,209,22,.8);animation:pulse 3s infinite;}
+.flag-main-title{font-family:var(--bebas);font-size:clamp(3rem,8vw,6rem);letter-spacing:.1em;line-height:.9;text-align:center;background:linear-gradient(135deg,#fff 0%,var(--gold2) 40%,#fff 70%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 20px rgba(252,209,22,.4));}
+.flag-tagline{font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(.9rem,2vw,1.2rem);color:rgba(255,255,255,.8);letter-spacing:.04em;}
+.flag-badges{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;}
+.flag-badge{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);backdrop-filter:blur(10px);color:rgba(255,255,255,.85);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:.35rem .8rem;border-radius:50px;}
+.flag-badge.green{background:rgba(0,194,122,.2);border-color:rgba(0,194,122,.4);color:var(--g2);}
+.flag-badge.gold{background:rgba(252,209,22,.15);border-color:rgba(252,209,22,.3);color:#fcd116;}
+
+/* Étoile décorative au centre du drapeau camerounais */
+.cam-star{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:5rem;opacity:.08;z-index:1;}
+
+/* ═══ SIGNATURE CARD ═══ */
+.sig-card{
+  max-width:500px;margin:0 auto;
+  background:linear-gradient(135deg,#062a18,#0a3d25,#083022);
+  border-radius:20px;padding:2.5rem;
+  border:1px solid rgba(0,194,122,.2);
+  box-shadow:0 20px 60px rgba(0,100,50,.3);
+  text-align:center;position:relative;overflow:hidden;
+}
+.sig-card::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(0,194,122,.15),transparent);}
+.sig-logo-big{font-family:var(--bebas);font-size:3rem;letter-spacing:.15em;background:linear-gradient(135deg,var(--g2),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.sig-divider{display:flex;align-items:center;gap:1rem;margin:.8rem 0;}
+.sig-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(0,194,122,.3),transparent);}
+.sig-group{font-size:.8rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold2);font-weight:600;}
+.sig-tagline{font-size:12px;color:rgba(255,255,255,.5);font-style:italic;margin-bottom:1.5rem;}
+.sig-contact{display:flex;flex-direction:column;gap:.5rem;}
+.sig-ct{font-size:12px;color:rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center;gap:.5rem;}
+.sig-ct span{color:var(--g2);}
+
+/* ═══ ANIMATIONS ═══ */
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.2)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+/* NAV */
+.mini-nav{display:flex;justify-content:space-between;align-items:center;padding:1rem 3rem;background:rgba(0,0,0,.8);backdrop-filter:blur(16px);border-bottom:1px solid rgba(0,194,122,.1);position:sticky;top:0;z-index:100;}
+.mn-logo{font-family:var(--bebas);font-size:1.2rem;letter-spacing:.15em;color:var(--g2);}
+.mn-back{font-size:12px;color:rgba(255,255,255,.4);text-decoration:none;transition:color .2s;}
+.mn-back:hover{color:var(--g2);}
+
+@media(max-width:700px){
+  .block{padding:2.5rem 1.2rem;}
+  .health-card{width:320px;height:200px;}
+  .flag-banner{height:240px;}
+  .terminals-grid{gap:1.5rem;}
+}
+</style>
+</head>
+<body>
+
+<nav class="mini-nav">
+  <div class="mn-logo">Z · VISUELS</div>
+  <a href="index.html" class="mn-back">← Retour au site</a>
+</nav>
+
+<div class="page-title">Visuels ZEUJIO GROUP</div>
+<p class="page-sub">Cartes médicales · Terminaux · Bannière officielle</p>
+
+<!-- ═══════════════════════════
+     SECTION 1 : CARTES DE SANTÉ
+═══════════════════════════ -->
+<div class="block">
+  <div class="section-lbl">💳 Cartes de Santé ZEUJIO</div>
+  <p class="section-desc">Trois versions de la carte médicale intelligente — Standard, Premium et Accès Urgence</p>
+
+  <div class="cards-grid">
+
+    <!-- CARTE 1 : STANDARD MÉDICALE -->
+    <div style="display:flex;flex-direction:column;gap:.8rem;align-items:center;">
+      <div class="health-card card-std" style="animation:float 5s ease-in-out infinite;">
+        <div class="card-inner">
+          <div class="card-top">
+            <div class="card-chip-wrap">
+              <div class="chip"></div>
+              <div class="chip-nfc">NFC ◈</div>
+            </div>
+            <div style="text-align:right;">
+              <div class="card-logo-txt"><span class="z">Z</span><span class="rest">EUJIO</span></div>
+              <div class="card-logo-sub">Medical Card</div>
+            </div>
+          </div>
+          <div class="card-mid">
+            <span class="puce-badge puce-med">● Puce Médicale</span>
+            <span class="puce-badge puce-ph">● Puce Pharma</span>
+          </div>
+          <div class="card-bottom">
+            <div class="card-name-block">
+              <div class="card-label-sm">Patient</div>
+              <div class="card-patient-name">AMOUGOU CLAIRE</div>
+              <div class="card-id">ZGH · 2026 · 0142 · 8891</div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:.3rem;">
+              <div class="qr-mini qr-dark">
+                <span></span><span style="background:rgba(0,194,122,.8)"></span><span></span><span style="background:rgba(0,194,122,.8)"></span><span></span><span style="background:rgba(0,194,122,.8)"></span><span></span>
+                <span style="background:rgba(0,194,122,.8)"></span><span></span><span style="background:rgba(0,194,122,.8)"></span><span></span><span style="background:rgba(0,194,122,.8)"></span><span></span><span style="background:rgba(0,194,122,.8)"></span>
+                <span></span><span style="background:rgba(0,194,122,.8)"></span><span></span><span style="background:rgba(0,194,122,.8)"></span><span></span><span></span><span style="background:rgba(0,194,122,.8)"></span>
+                <span style="background:rgba(0,194,122,.8)"></span><span></span><span></span><span style="background:rgba(0,194,122,.8)"></span><span></span><span style="background:rgba(0,194,122,.8)"></span><span></span>
+                <span></span><span style="background:rgba(0,194,122,.8)"></span><span style="background:rgba(0,194,122,.8)"></span><span></span><span style="background:rgba(0,194,122,.8)"></span><span></span><span></span>
+              </div>
+              <div style="font-size:7px;color:rgba(255,255,255,.3);letter-spacing:.1em;">EXP 12/30</div>
+            </div>
+          </div>
+        </div>
+        <div class="holo"></div>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,.4);letter-spacing:.08em;text-transform:uppercase;">Carte Standard — Usage Médical & Pharmaceutique</div>
+    </div>
+
+    <!-- CARTE 2 : PREMIUM GOLD -->
+    <div style="display:flex;flex-direction:column;gap:.8rem;align-items:center;">
+      <div class="health-card card-premium" style="animation:float 5s ease-in-out infinite .8s;">
+        <div class="card-inner">
+          <div class="card-top">
+            <div class="card-chip-wrap">
+              <div class="chip" style="background:linear-gradient(135deg,#e8c96a,#c9a840);"></div>
+              <div class="chip-nfc" style="color:rgba(232,201,106,.6);">NFC ◈</div>
+            </div>
+            <div style="text-align:right;">
+              <div class="card-logo-txt" style="font-size:1.1rem;"><span class="z">Z</span><span class="rest">EUJIO</span></div>
+              <div class="card-logo-sub" style="color:rgba(232,201,106,.5);">PREMIUM CARD</div>
+            </div>
+          </div>
+          <div class="card-mid">
+            <span class="puce-badge puce-med">● Médical</span>
+            <span class="puce-badge puce-ph">● Pharma</span>
+            <span style="font-size:7px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .5rem;border-radius:3px;background:rgba(232,201,106,.15);color:var(--gold2);border:1px solid rgba(232,201,106,.3);">★ Premium</span>
+          </div>
+          <div class="card-bottom">
+            <div class="card-name-block">
+              <div class="card-label-sm" style="color:rgba(232,201,106,.4);">Assuré Premium</div>
+              <div class="card-patient-name" style="background:linear-gradient(135deg,var(--gold2),#fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">DR. NKENGNE PAUL</div>
+              <div class="card-id" style="color:rgba(232,201,106,.3);">ZGH · 2026 · 0007 · 0001</div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:.5rem;">
+              <div style="font-size:1.5rem;">★</div>
+              <div style="font-size:7px;color:rgba(232,201,106,.4);letter-spacing:.1em;">EXP 12/31</div>
+            </div>
+          </div>
+        </div>
+        <!-- Lignes dorées décoratives -->
+        <div style="position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--gold2),transparent);opacity:.4;"></div>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,.4);letter-spacing:.08em;text-transform:uppercase;">Carte Premium — Assurances & Professionnels de Santé</div>
+    </div>
+
+    <!-- CARTE 3 : URGENCE -->
+    <div style="display:flex;flex-direction:column;gap:.8rem;align-items:center;">
+      <div class="health-card card-urgence" style="animation:float 5s ease-in-out infinite 1.5s;">
+        <div class="card-inner">
+          <div class="card-top">
+            <div style="display:flex;flex-direction:column;gap:.3rem;">
+              <div style="font-size:8px;font-weight:700;letter-spacing:.15em;color:#ff6680;text-transform:uppercase;">⚕ URGENCE</div>
+              <div class="chip" style="background:linear-gradient(135deg,#c0392b,#8b0000);width:34px;height:22px;"></div>
+            </div>
+            <div style="text-align:right;">
+              <div class="card-logo-txt"><span class="z" style="color:#ff6680;">Z</span><span class="rest">EUJIO</span></div>
+              <div class="card-logo-sub" style="color:rgba(255,102,128,.4);">EMERGENCY CARD</div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:.4rem;flex:1;justify-content:center;">
+            <div style="font-size:8px;color:rgba(255,102,128,.5);letter-spacing:.12em;text-transform:uppercase;">Infos vitales — QR Code</div>
+            <div style="display:flex;gap:.5rem;align-items:center;">
+              <span class="puce-badge puce-urg">● Accès Urgent</span>
+            </div>
+            <div style="font-size:9px;color:rgba(255,255,255,.5);">🩸 Groupe: <strong style="color:#ff6680;">B+</strong> &nbsp;|&nbsp; ⚠️ Allergie: <strong style="color:#ffaa00;">Pénicilline</strong></div>
+          </div>
+          <div class="card-bottom">
+            <div class="card-name-block">
+              <div class="card-label-sm" style="color:rgba(255,102,128,.4);">Patient</div>
+              <div class="card-patient-name" style="font-size:1.1rem;">FOUDA MARTIN</div>
+              <div class="card-id" style="color:rgba(255,102,128,.25);">ZGH · 2026 · 0389 · 4421</div>
+            </div>
+            <div class="qr-mini" style="display:grid;grid-template-columns:repeat(7,1fr);grid-template-rows:repeat(5,1fr);gap:1px;width:44px;height:32px;">
+              <span style="background:rgba(255,102,128,.7);border-radius:1px;"></span><span style="background:rgba(255,102,128,.15);border-radius:1px;"></span><span style="background:rgba(255,102,128,.7);border-radius:1px;"></span><span style="background:rgba(255,102,128,.15);border-radius:1px;"></span><span style="background:rgba(255,102,128,.7);border-radius:1px;"></span><span style="background:rgba(255,102,128,.15);border-radius:1px;"></span><span style="background:rgba(255,102,128,.7);border-radius:1px;"></span>
+              <span style="background:rgba(255,102,128,.15);border-radius:1px;"></span><span style="background:rgba(255,102,128,.7);border-radius:1px;"></span><span style="background:rgba(255,102,128,.15);border-radius:1px;"></span><span style="background:rgba(255,102,128,.7);border-radius:1px;"></span><span style="background:rgba(255,102,128,.15);border-radius:1px;"></span><span style="background:rgba(255,102,128,.7);border-radius:1px;"></span><span style="background:rgba(255,102,128,.15);border-radius:1px;"></span>
+              <span style="background:rgba(255,102,128,.7);border-radius:1px;"></span><span style="background:rgba(255,102,128,.15);border-radius:1px;"></span><span style="background:rgba(255,102,128,.7);border-radius:1px;"></span><span style="background:rgba(255,102,128,.7);border-radius:1px;"></span><span style="background:rgba(255,102,128,.15);border-radius:1px;"></span><span style="background:rgba(255,102,128,.7);border-radius:1px;"></span><span style="background:rgba(255,102,128,.15);border-radius:1px;"></span>
+              <span style="background:rgba(255,102,128,.15);border-radius:1px;"></span><span style="background:rgba(255,102,128,.7);border-radius:1px;"></span><span style="background:rgba(255,102,128,.15);border-radius:1px;"></span><span style="background:rgba(255,102,128,.7);border-radius:1px;"></span><span style="background:rgba(255,102,128,.7);border-radius:1px;"></span><span style="background:rgba(255,102,128,.15);border-radius:1px;"></span><span style="background:rgba(255,102,128,.7);border-radius:1px;"></span>
+              <span style="background:rgba(255,102,128,.7);border-radius:1px;"></span><span style="background:rgba(255,102,128,.7);border-radius:1px;"></span><span style="background:rgba(255,102,128,.15);border-radius:1px;"></span><span style="background:rgba(255,102,128,.7);border-radius:1px;"></span><span style="background:rgba(255,102,128,.15);border-radius:1px;"></span><span style="background:rgba(255,102,128,.7);border-radius:1px;"></span><span style="background:rgba(255,102,128,.7);border-radius:1px;"></span>
+            </div>
+          </div>
+        </div>
+        <div style="position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,#ff6680,transparent);opacity:.5;"></div>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,.4);letter-spacing:.08em;text-transform:uppercase;">Carte Urgence — QR Code Accès Vital Immédiat</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════
+     SECTION 2 : TERMINAUX
+═══════════════════════════ -->
+<div class="block" style="background:rgba(0,194,122,.02);">
+  <div class="section-lbl">🖥️ Terminaux ZEUJIO</div>
+  <p class="section-desc">Trois modèles de terminaux déployés dans les établissements de santé</p>
+
+  <div class="terminals-grid">
+
+    <!-- Terminal comptoir -->
+    <div style="display:flex;flex-direction:column;align-items:center;">
+      <div class="terminal-counter" style="animation:float 6s ease-in-out infinite;">
+        <div class="t-screen-wrap">
+          <div class="t-scan-line"></div>
+          <div class="t-screen-inner">
+            <div class="t-status-bar">
+              <div style="display:flex;align-items:center;gap:4px;"><div class="t-status-dot"></div><div class="t-status-txt">Connecté · Sécurisé</div></div>
+              <div class="t-status-txt">09:41</div>
+            </div>
+            <div class="t-screen-body">
+              <div class="t-logo-screen">ZEUJIO</div>
+              <div class="t-card-slot-visual"></div>
+              <div class="t-screen-msg">Insérez votre carte médicale<br>ou présentez le QR Code</div>
+              <div style="font-size:1.5rem;">💳</div>
+            </div>
+          </div>
+        </div>
+        <div class="t-body-counter">
+          <div class="t-brand-strip"></div>
+          <div class="t-slots">
+            <div class="t-slot"></div>
+            <div class="t-slot" style="width:24px;"></div>
+            <div class="t-slot"></div>
+          </div>
+          <div class="t-brand-txt">ZEUJIO TERMINAL · ZT-100</div>
+        </div>
+        <div class="t-base"></div>
+      </div>
+      <div class="t-label">Terminal de Comptoir<br><span style="color:rgba(0,194,122,.5);font-size:10px;">Hôpitaux · Cliniques · Pharmacies</span></div>
+    </div>
+
+    <!-- Terminal mural -->
+    <div style="display:flex;flex-direction:column;align-items:center;">
+      <div class="tw-mount" style="animation:float 6s ease-in-out infinite .5s;">
+        <div class="tw-screen">
+          <div class="tw-screen-top">
+            <div class="tw-screen-top-lbl">ZEUJIO · Accès Patient</div>
+            <div class="tw-screen-top-dot"></div>
+          </div>
+          <div class="tw-body">
+            <div class="tw-row"><span class="tw-row-k">Statut</span><span class="tw-row-v">✓ En ligne</span></div>
+            <div class="tw-row"><span class="tw-row-k">Dernière lecture</span><span class="tw-row-v">08:55</span></div>
+            <div class="tw-row"><span class="tw-row-k">Lectures/jour</span><span class="tw-row-v">47</span></div>
+            <div class="tw-row"><span class="tw-row-k">Sync cloud</span><span class="tw-row-v">● Actif</span></div>
+          </div>
+        </div>
+        <div class="tw-reader">
+          <div class="tw-reader-led"></div>
+          <div class="tw-reader-txt">Glisser la carte ici</div>
+        </div>
+        <div class="tw-qr-scan">
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+        </div>
+        <div style="font-size:9px;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase;">Scanner QR ↑</div>
+        <div class="tw-brand">ZEUJIO · ZW-200</div>
+      </div>
+      <div class="t-label">Terminal Mural<br><span style="color:rgba(0,194,122,.5);font-size:10px;">Urgences · Salles d'attente</span></div>
+    </div>
+
+    <!-- Terminal portable -->
+    <div style="display:flex;flex-direction:column;align-items:center;">
+      <div class="terminal-handheld" style="animation:float 6s ease-in-out infinite 1s;">
+        <div class="th-device">
+          <div class="th-speaker"></div>
+          <div class="th-screen">
+            <div class="th-screen-hdr">
+              <div class="th-screen-lbl">Z · Mobile</div>
+              <div style="width:5px;height:5px;background:var(--g2);border-radius:50%;animation:pulse 2s infinite;"></div>
+            </div>
+            <div class="th-screen-body">
+              <div class="th-screen-icon">📲</div>
+              <div class="th-screen-msg">NFC Actif<br>Approchez la carte</div>
+              <div style="display:flex;gap:4px;margin-top:4px;">
+                <div style="width:6px;height:6px;background:var(--g2);border-radius:50%;opacity:.8;"></div>
+                <div style="width:6px;height:6px;background:var(--g2);border-radius:50%;opacity:.5;animation:pulse 1s .2s infinite;"></div>
+                <div style="width:6px;height:6px;background:var(--g2);border-radius:50%;opacity:.3;animation:pulse 1s .4s infinite;"></div>
+              </div>
+            </div>
+          </div>
+          <div class="th-bottom">
+            <div class="th-slot"></div>
+            <div class="th-btn">📷</div>
+          </div>
+        </div>
+      </div>
+      <div class="t-label">Terminal Portable<br><span style="color:rgba(0,194,122,.5);font-size:10px;">Laboratoires · Terrain · Visites à domicile</span></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════
+     SECTION 3 : BANNIÈRE / DRAPEAU
+═══════════════════════════ -->
+<div class="block">
+  <div class="section-lbl">🇨🇲 Bannière Officielle ZEUJIO GROUP</div>
+  <p class="section-desc">Bannière aux couleurs du Cameroun avec logo et identité visuelle</p>
+
+  <div class="banner-wrap">
+    <div class="flag-banner">
+      <!-- Drapeau Cameroun -->
+      <div class="flag-bg">
+        <div class="flag-green"></div>
+        <div class="flag-red"></div>
+        <div class="flag-yellow"></div>
+      </div>
+      <div class="flag-overlay"></div>
+      <div class="flag-overlay2"></div>
+      <div class="cam-star">⭐</div>
+
+      <!-- Contenu -->
+      <div class="flag-content">
+        <div class="flag-star">⭐</div>
+        <div class="flag-main-title">ZEUJIO<br>GROUP</div>
+        <div class="flag-tagline">"We build what tomorrow needs"</div>
+        <div class="flag-badges">
+          <span class="flag-badge green">HealthTech</span>
+          <span class="flag-badge">Cameroun 🇨🇲</span>
+          <span class="flag-badge gold">Innovation Médicale</span>
+          <span class="flag-badge">Afrique 🌍</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bannière variante horizontale -->
+  <div class="banner-wrap" style="margin-top:2rem;">
+    <div class="flag-banner" style="height:180px;border-radius:12px;">
+      <div class="flag-bg" style="flex-direction:column;">
+        <div class="flag-green" style="flex:1;"></div>
+        <div class="flag-red" style="flex:1;"></div>
+        <div class="flag-yellow" style="flex:1;"></div>
+      </div>
+      <div class="flag-overlay" style="background:rgba(0,0,0,.6);"></div>
+      <div class="flag-content" style="flex-direction:row;justify-content:space-around;padding:0 3rem;">
+        <div style="display:flex;flex-direction:column;align-items:flex-start;gap:.5rem;">
+          <div style="font-family:var(--bebas);font-size:clamp(2rem,6vw,4rem);letter-spacing:.1em;background:linear-gradient(135deg,#fff,var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;">ZEUJIO GROUP</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.6);letter-spacing:.08em;font-style:italic;">"We build what tomorrow needs"</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:.4rem;text-align:right;">
+          <div style="font-size:11px;color:rgba(255,255,255,.5);">📧 manor.zeujio@gmail.com</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.5);">📱 +237 659 541 901</div>
+          <div style="font-size:11px;color:var(--g2);">🌍 HealthTech Camerounaise</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════
+     SECTION 4 : CARTE DE VISITE
+═══════════════════════════ -->
+<div class="block" style="background:rgba(0,194,122,.02);">
+  <div class="section-lbl">🪪 Carte de Visite & Signature</div>
+  <p class="section-desc">Design officiel pour communications et présentations</p>
+
+  <div class="sig-card">
+    <div style="position:absolute;bottom:-60px;left:-60px;width:180px;height:180px;background:radial-gradient(circle,rgba(26,111,168,.15),transparent);pointer-events:none;"></div>
+    <div class="sig-logo-big">ZEUJIO</div>
+    <div class="sig-divider">
+      <div class="sig-line"></div>
+      <div class="sig-group">GROUP</div>
+      <div class="sig-line"></div>
+    </div>
+    <div class="sig-tagline">"We build what tomorrow needs"</div>
+    <div style="font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.15em;text-transform:uppercase;margin-bottom:1.2rem;">HealthTech Camerounaise · Infrastructure Médicale Intelligente</div>
+    <div class="sig-contact">
+      <div class="sig-ct"><span>📧</span> manor.zeujio@gmail.com</div>
+      <div class="sig-ct"><span>📱</span> +237 659 541 901</div>
+      <div class="sig-ct"><span>📍</span> Yaoundé, Cameroun</div>
+      <div class="sig-ct"><span>🌐</span> www.zeujiogroup.com</div>
+    </div>
+    <div style="margin-top:1.5rem;display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;">
+      <span style="font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.25rem .7rem;border-radius:3px;background:rgba(0,194,122,.12);color:var(--g2);border:1px solid rgba(0,194,122,.2);">Carte Médicale Intelligente</span>
+      <span style="font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.25rem .7rem;border-radius:3px;background:rgba(26,111,168,.12);color:#64b5f6;border:1px solid rgba(26,111,168,.2);">Cloud Sécurisé</span>
+      <span style="font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.25rem .7rem;border-radius:3px;background:rgba(232,201,106,.12);color:var(--gold2);border:1px solid rgba(232,201,106,.2);">Terminaux Médicaux</span>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
